@@ -1,0 +1,94 @@
+<html>
+	<head>
+	</head>
+	<body>
+		<canvas id="canvas" width="1050px" height="800px">Get a real browser already will ya?</canvas>
+	</body>
+	<script>
+		var asteroid = function(x, y, verts, size, direction) {
+			this.x = x;
+			this.y = y;
+			this.verts = verts;
+			this.size = size;
+			this.direction = direction;
+			this.angles = [];
+			this.poly = [];
+			
+			for (var i = 0; i < this.verts; i++) {
+				var tmp = Math.floor(Math.random() * 360);
+				this.angles.push(tmp);
+			}
+				
+			this.angles.sort(function(a,b) { return a>b; });
+			
+			for (var i = 0; i < verts; i++) {
+				this.poly.push(this.x + size * Math.cos(this.angles[i]  * Math.PI / 180));
+				this.poly.push(this.y + size * Math.sin(this.angles[i]  * Math.PI / 180));
+			}
+			
+			this.draw = function(ctx) {
+				ctx.strokeStyle = '#FFFFFF';
+				ctx.beginPath();
+				ctx.moveTo(this.poly[0], this.poly[1]);
+				for (var i = 0; i < this.poly.length; i+=2) {
+					ctx.lineTo(this.poly[i], this.poly[i + 1]);
+				}
+				ctx.lineTo(this.poly[0], this.poly[1]);
+				ctx.stroke();
+			};
+			
+			this.move = function() {
+				this.x += 1 * Math.cos(this.direction * Math.PI / 180);
+				this.y += 1 * Math.sin(this.direction * Math.PI / 180);
+				if (this.x > ctx.canvas.width + this.size)
+					this.x = 0 - this.size;
+				if (this.y > ctx.canvas.height + this.size)
+					this.y = 0 - this.size;
+				
+				var j = 0;
+				for (var i = 0; i < this.poly.length; i+=2) {
+					this.poly[i] = this.x + size * Math.cos(this.angles[j]  * Math.PI / 180);
+					this.poly[i + 1] = this.y + size * Math.sin(this.angles[j]  * Math.PI / 180);
+					j++;
+				}
+			};
+			
+			this.contains = function (x, y) {
+				if (x > this.x * this.width && y > this.y * this.height && y < this.y * this.height + this.height && x < this.x * this.width + this.width)
+					return true;
+				else
+					return false;
+			};
+		};
+		
+		// Spawn
+		var ctx = document.getElementById('canvas').getContext("2d");
+		var rocks = [];
+		
+		function spawn(num) {
+			for (var i = 0; i < num; i++)
+				rocks.push(new asteroid(Math.random() * ctx.canvas.width, Math.random() * ctx.canvas.height, 10, 30, Math.random() * 360));
+		};
+		
+		spawn(100);
+				
+		// draw loop
+		setInterval(function() {
+			ctx.fillStyle = '#000000';
+			ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+			for (var i = 0; i < rocks.length; i++)
+				rocks[i].draw(ctx);
+		}, 17);
+		
+		// logic loop
+		setInterval(function() {	
+			for (var i = 0; i < rocks.length; i++)
+				rocks[i].move();
+		}, 60);
+		
+		onmousedown = function (event) {
+
+        };
+		
+	</script>
+</html>
