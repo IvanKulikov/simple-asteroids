@@ -63,6 +63,11 @@
 			
 			for (var i = 0; i < rocks.length; i++) 
 			{
+				if (rocks[i].contains(pl.getCoords()))
+				{
+					alert("You died! Your score is: " + score);
+					location.reload();
+				}
 				for(var k = 0; k < bullets.length; k++)
 				{
 					if (rocks[i].contains(bullets[k].getCoords())) {						

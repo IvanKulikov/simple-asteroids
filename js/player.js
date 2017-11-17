@@ -97,4 +97,8 @@ var player = function(x, y, direction) {
 	this.getBullet = function() {
 		return new bullet(x, y, direction)
 	}
+
+	this.getCoords = function() {
+		return {x: x, y :y}
+	}
 };
