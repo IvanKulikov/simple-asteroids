@@ -14,13 +14,15 @@
 		var rocks = [];
 		var bullets = [];
 		var pl = new player(400, 400, 270);
+		var score = 0;
+		var rockSeed = 1;
 		
 		function spawn(num) {
 			for (var i = 0; i < num; i++)
-				rocks.push(new asteroid(Math.random() * ctx.canvas.width, Math.random() * ctx.canvas.height, 10, 30, Math.random() * 360));
+				rocks.push(new asteroid(Math.random() * ctx.canvas.width, Math.random() * ctx.canvas.height, 10, 30, Math.random() * 360, true));
 		}
 		
-		spawn(25);
+		spawn(rockSeed);
 				
 		(function render() {
 			drawLoop(ctx);
@@ -31,6 +33,9 @@
 		function drawLoop(ctx) {
 			ctx.fillStyle = '#000000';
 			ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+			ctx.fillStyle = '#FFFFFF';
+			ctx.fillText('Score: ' + score,  ctx.canvas.width - 100, 30);
+
 			pl.draw(ctx);
 			for (var i = 0; i < rocks.length; i++)
 				rocks[i].draw(ctx);			
@@ -41,7 +46,7 @@
 		var acc = false;
 		var r = false;
 		var l = false;
-		var shoot = false;		
+		var shot = false;		
 		
 		// logic loop
 		setInterval(function() {	
@@ -53,16 +58,21 @@
 				pl.rotate(0);
 			if (l)
 				pl.rotate(1);
-			if (shoot)
-				bullets.push(pl.getBullet());						
+			// if (shoot)
+			// 	bullets.push(pl.getBullet());						
 			
 			for (var i = 0; i < rocks.length; i++) 
 			{
 				for(var k = 0; k < bullets.length; k++)
 				{
-					if (rocks[i].contains(bullets[k].getCoords())) {
+					if (rocks[i].contains(bullets[k].getCoords())) {						
+						var newRocks = rocks[i].split()
+						for (var z = 0; z < newRocks.length; z++)
+							rocks.push(newRocks[z]);
 						rocks.splice(i, 1);
+						rocks.push();
 						bullets.splice(k, 1);
+						score++;
 					}
 				}
 				rocks[i].move();
@@ -73,7 +83,7 @@
 					bullets.splice(j, 1);
 			}
 			if (rocks.length == 0)
-				spawn(25);
+				spawn(++rockSeed);
 		}, 60);
 		
 		window.onkeydown = function(e) {
@@ -87,8 +97,9 @@
 				case 37: //right
 					l = true;
 					break;
-				case 17: //right
-					shoot = true;
+				case 17: //ctrl											
+					if (!shot) bullets.push(pl.getBullet());
+					shot = true;
 					break;
 			}			
 		}
@@ -104,8 +115,8 @@
 				case 37: //right
 					l = false;
 					break;
-				case 17: 
-					shoot = false;
+				case 17: // ctrl
+					shot = false;
 					break;
 			}			
 		}

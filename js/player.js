@@ -27,8 +27,8 @@ var player = function(x, y, direction) {
 		ctx.lineTo(poly[0], poly[1]);
 		ctx.stroke();
 		
-		ctx.fillStyle = '#FFFFFF';
-		ctx.fillText('Player x: ' + x.toString().substr(0, 10) + ' y: ' + y.toString().substr(0, 10), ctx.canvas.width - 200, 30);
+		// ctx.fillStyle = '#FFFFFF';
+		// ctx.fillText('Player x: ' + x.toString().substr(0, 10) + ' y: ' + y.toString().substr(0, 10), ctx.canvas.width - 200, 30);
 	};
 	
 	this.move = function() {

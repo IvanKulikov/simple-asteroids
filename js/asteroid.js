@@ -1,4 +1,4 @@
-var asteroid = function(x, y, verts, size, direction) {
+var asteroid = function(x, y, verts, size, direction, fractions) {
 	var x = x;
 	var y = y;
 	var verts = verts;
@@ -6,6 +6,7 @@ var asteroid = function(x, y, verts, size, direction) {
 	var direction = direction  - 90;
 	var angles = [];
 	var poly = [];
+	var fractions = fractions;
 	
 	for (var i = 0; i < verts; i++) {
 		var tmp = Math.floor(Math.random() * 360);
@@ -55,4 +56,17 @@ var asteroid = function(x, y, verts, size, direction) {
 		var dy = y - obj.y
 		return dx*dx+dy*dy <= size*size
 	};
+
+	this.split = function() {
+		var rocks = [];
+
+		if (fractions) {
+			for(var i = 0; i < 3; i++)
+				rocks.push(
+					new asteroid(x, y, 10, 15, Math.random() * 360, false)
+				)
+		}
+
+		return rocks;
+	}
 };
