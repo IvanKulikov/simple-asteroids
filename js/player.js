@@ -92,5 +92,9 @@ var player = function(x, y, direction) {
 			return true;
 		else
 			return false;
-	};
+	};	
+
+	this.getBullet = function() {
+		return new bullet(x, y, direction)
+	}
 };

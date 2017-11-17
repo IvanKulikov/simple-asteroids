@@ -46,10 +46,9 @@ var asteroid = function(x, y, verts, size, direction) {
 		}
 	};	
 	
-	this.contains = function (x, y) {
-		if (x > x * width && y > y * height && y < y * height + height && x < x * width + width)
-			return true;
-		else
-			return false;
+	this.contains = function (obj) {
+		var dx = x - obj.x
+		var dy = y - obj.y
+		return dx*dx+dy*dy <= size*size
 	};
 };
