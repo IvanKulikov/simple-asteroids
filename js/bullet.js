@@ -20,6 +20,10 @@ var bullet = function(x, y, direction) {
 			x = 0;
 		if (y > ctx.canvas.height)
             y = 0;
+        if (x < 0)
+			x = ctx.canvas.width;
+		if (y < 0)
+			y = ctx.canvas.height;
         life--;
     };
     

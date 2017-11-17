@@ -37,6 +37,10 @@ var asteroid = function(x, y, verts, size, direction) {
 			x = 0 - size;
 		if (y > ctx.canvas.height + size)
 			y = 0 - size;
+		if (x < -size)
+			x = ctx.canvas.width + size;
+		if (y < -size)
+			y = ctx.canvas.height + size;
 		
 		var j = 0;
 		for (var i = 0; i < poly.length; i+=2) {
