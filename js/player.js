@@ -10,6 +10,8 @@ var player = function(x, y, direction) {
 	var PLAYER_MAX_SPEED = 5;
 	var PLAYER_ACCELERATION = 1;
 	var SPACE_FRICTION = 0.05;
+	// public 
+	this.dead = false;
 	
 	var recalculateGeometry = function() {
 		poly[0] = x + size * Math.cos((0 + direction) * Math.PI / 180);		poly[1] = y + size * Math.sin((0 + direction)* Math.PI / 180);
@@ -100,5 +102,5 @@ var player = function(x, y, direction) {
 
 	this.getCoords = function() {
 		return {x: x, y :y}
-	}
+	}	
 };

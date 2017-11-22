@@ -3,6 +3,7 @@
 		<script src='js/asteroid.js'></script>
 		<script src='js/player.js'></script>
 		<script src='js/bullet.js'></script>
+		<script src='js/ui.js'></script>
 	</head>
 	<body>
 		<canvas id="canvas" width="640px" height="480px">Get a real browser already will ya?</canvas>
@@ -34,13 +35,17 @@
 			ctx.fillStyle = '#000000';
 			ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 			ctx.fillStyle = '#FFFFFF';
-			ctx.fillText('Score: ' + score,  ctx.canvas.width - 100, 30);
 
-			pl.draw(ctx);
-			for (var i = 0; i < rocks.length; i++)
-				rocks[i].draw(ctx);			
-			for (var j = 0; j < bullets.length; j++)
-				bullets[j].draw(ctx);
+			if (pl.dead)
+				drawText(ctx, "YOU DIED\r\nYour score is: " + score + "\r\n Press ESC to play again");			
+			else {								
+				ctx.fillText('Score: ' + score,  ctx.canvas.width - 100, 30);
+				pl.draw(ctx);
+				for (var i = 0; i < rocks.length; i++)
+					rocks[i].draw(ctx);			
+				for (var j = 0; j < bullets.length; j++)
+					bullets[j].draw(ctx);
+			}
 		};
 		
 		var acc = false;
@@ -64,10 +69,7 @@
 			for (var i = 0; i < rocks.length; i++) 
 			{
 				if (rocks[i].contains(pl.getCoords()))
-				{
-					alert("You died! Your score is: " + score);
-					location.reload();
-				}
+					pl.dead = true;
 				for(var k = 0; k < bullets.length; k++)
 				{
 					if (rocks[i].contains(bullets[k].getCoords())) {						
@@ -106,6 +108,8 @@
 					if (!shot) bullets.push(pl.getBullet());
 					shot = true;
 					break;
+				case 27: // esc
+					location.reload();
 			}			
 		}
 		
